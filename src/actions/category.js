@@ -1,6 +1,7 @@
 import ActionTypes from './ActionTypes';
-import { fetchTestCategories } from '../models/Test';
 import Category from '../models/Category';
+import axios from 'axios';
+import API_ROOT from '../constants/AppConstants';
 
 // SHOW ALL
 export const categoriesAll_REQ = () => ({
@@ -17,12 +18,23 @@ export const categoriesAll_X = () => ({
 export function fetchAllCategories() {
   return async (dispatch, getState) => {
     dispatch(categoriesAll_REQ());
-    const categoryList = fetchTestCategories();
-    if (categoryList.length === 0) {
-      dispatch(categoriesAll_X());
-    } else {
+    const ajaxReq = {
+      method: 'get',
+      url: API_ROOT + '/category/all'
+    };
+    axios(ajaxReq)
+    .then((response) => {
+      const categoryList = response.data;
       dispatch(categoriesAll_OK(categoryList));
-    }
+      dispatch(fetchRndCategory());
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(categoriesAll_X());
+    })
+    .then(() => {
+      return { type: null };
+    });
   }
 };
 
@@ -41,15 +53,26 @@ export const categoryAdd_X = () => ({
 export function addCategory(category) {
   return async (dispatch, getState) => {
     dispatch(categoryAdd_REQ());
-    // Here would be some async AJAX call with await...
-    // ... or some promises or so
-    // console.dir(category);
-
-    if (!category.id || !category.name || !category.budget) {
-      dispatch(categoryAdd_X());
-    } else {
+    const ajaxReq = {
+      method: 'post',
+      url: API_ROOT + '/add_category',
+      data: {
+        id: Number(category.id),
+        name: category.name,
+        budget: Number(category.budget)
+      }
+    };
+    axios(ajaxReq)
+    .then(() => {
       dispatch(categoryAdd_OK(category));
-    }
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(categoryAdd_X());
+    })
+    .then(() => {
+      return { type: null };
+    });
   }
 };
 
@@ -59,21 +82,21 @@ export const categoryRnd_REQ = () => ({
 });
 export const categoryRnd_OK = (categoryRnd) => ({
   type: ActionTypes.CATEGORY_RND_OK,
-  category: categoryRnd,
+  categoryRnd: categoryRnd,
 });
 export const categoryRnd_X = (categoryDef) => ({
   type: ActionTypes.CATEGORY_RND_X,
-  category: categoryDef,
+  categoryRnd: categoryDef,
 });
 
 export function fetchRndCategory() {
   return async (dispatch, getState) => {
     dispatch(categoryRnd_REQ());
     const categoryList = getState().categories.categoryList;
-    const categoryRnd = [categoryList[Math.floor(Math.random() * categoryList.length)]];
     if (categoryList.length === 0) {
       dispatch(categoryRnd_X([new Category('00', 'Category List is Empty', 0,)]));
     } else {
+      const categoryRnd = [categoryList[Math.floor(Math.random() * categoryList.length)]];
       dispatch(categoryRnd_OK(categoryRnd));
     }
   }
@@ -83,9 +106,9 @@ export function fetchRndCategory() {
 export const categoryDel_REQ = () => ({
   type: ActionTypes.CATEGORY_DEL_REQ,
 });
-export const categoryDel_OK = (newList) => ({
+export const categoryDel_OK = () => ({
   type: ActionTypes.CATEGORY_DEL_OK,
-  categoryList: newList,
+  // categoryList: newList,
 });
 export const categoryDel_X = () => ({
   type: ActionTypes.CATEGORY_DEL_X,
@@ -94,28 +117,25 @@ export const categoryDel_X = () => ({
 export function deleteCategory(idToChk) {
   return async (dispatch, getState) => {
     dispatch(categoryDel_REQ());
-    const categoryList = getState().categories.categoryList;
-  
-    if (idToChk !== null) {
-      const newList = categoryList.filter(
-        (element) => {
-          return element.id !== idToChk;
-        }
-      );
-      dispatch(categoryDel_OK(newList));
-    } else {
-      dispatch(categoryDel_X());
-    }
-    
-    /*
-    for (let i = 0; i < categoryList.length; i++) { 
-      if (categoryList[i].id === id) {
-        console.log(i);
-        categoryList.splice(i, 1); 
-        dispatch(categoryDel_OK());
+    const ajaxReq = {
+      method: 'delete',
+      url: API_ROOT + '/delete_category',
+      params: {
+        id: idToChk
       }
-    } 
-    */
-  
+    };
+    axios(ajaxReq)
+    .then(() => {
+      dispatch(categoryDel_OK());
+      dispatch(fetchAllCategories());
+      dispatch(fetchRndCategory());
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(categoryDel_X());
+    })
+    .then(() => {
+      return { type: null };
+    });
   }
 };

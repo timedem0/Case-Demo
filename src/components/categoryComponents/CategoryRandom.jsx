@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { fetchRndCategory } from '../../actions/category';
 import CategoryItem from './CategoryItem';
 import { connect } from 'react-redux';
 
 class CategoryRandom extends Component {
-
-  componentDidMount() {
-    this.props.localFetch();
-  }
 
   render() {
     return (
@@ -15,7 +10,7 @@ class CategoryRandom extends Component {
         <h4>Category of the Day</h4>
 
         {
-          this.props.categories.category.map((item) =>
+          this.props.categories.categoryRnd.map((item) =>
             <CategoryItem key={item.id} id={item.id} name={item.name} budget={item.budget} />
           )
         }
@@ -25,14 +20,8 @@ class CategoryRandom extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  localFetch: () => {
-    dispatch(fetchRndCategory());
-  },
-});
-
 const mapStateToProps = state => ({
   categories: state.categories,
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryRandom);
+export default connect(mapStateToProps)(CategoryRandom);

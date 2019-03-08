@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchAllCategories, deleteCategory, fetchRndCategory } from '../../actions/category';
+import { fetchAllCategories, deleteCategory } from '../../actions/category';
 import CategoryListItem from './CategoryListItem';
 import { connect } from 'react-redux';
 
@@ -35,7 +35,6 @@ const mapDispatchToProps = dispatch => ({
   },
   localDelete: (id) => {
     dispatch(deleteCategory(id));
-    dispatch(fetchRndCategory());
   },
 });
 

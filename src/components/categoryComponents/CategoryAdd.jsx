@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addCategory, fetchRndCategory } from '../../actions/category';
+import { addCategory } from '../../actions/category';
 
 class CategoryAdd extends Component {
 
@@ -20,7 +20,7 @@ class CategoryAdd extends Component {
       });
   };
 
-  addCategoryButtonClicked = () => {
+  addCategory = () => {
     const category = this.state.newCategoryObject;
     this.props.addCategoryLocal(category);
   };
@@ -30,10 +30,10 @@ class CategoryAdd extends Component {
       <div>
         <h4>New Category</h4>
         <p>
-          Id: <input id="id" type="text" onChange={this.inputFieldValueChanged} /><br />
+          Id: <input id="id" type="number" onChange={this.inputFieldValueChanged} /><br />
           Name: <input id="name" type="text" onChange={this.inputFieldValueChanged} /><br />
-          Budget: <input id="budget" type="text" onChange={this.inputFieldValueChanged} /><br />
-          <button type="button" onClick={this.addCategoryButtonClicked} >ADD NEW CATEGORY</button>
+          Budget: <input id="budget" type="number" onChange={this.inputFieldValueChanged} /><br />
+          <button type="button" onClick={this.addCategory}>ADD NEW CATEGORY</button>
         </p>
       </div>
     );
@@ -43,7 +43,6 @@ class CategoryAdd extends Component {
 const mapDispatchToProps = dispatch => ({
   addCategoryLocal: (category) => {
     dispatch(addCategory(category));
-    dispatch(fetchRndCategory());
   },
 });
 

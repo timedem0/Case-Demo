@@ -5,6 +5,7 @@ export const initialState = {
     isLoading: false,
     categoryList: [],
     category: [],
+    categoryRnd: [],
     // categoryIdsFound: null,
     // categoryCurrent: null,
 };
@@ -57,13 +58,13 @@ export default function categories(state=initialState, action) {
         case ActionTypes.CATEGORY_RND_OK:
             return {
                 ...state,
-                category: action.category,
+                categoryRnd: action.categoryRnd,
                 isLoading: false,
             };
         case ActionTypes.CATEGORY_RND_X:
             return {
                 ...state,
-                category: action.category,
+                categoryRnd: action.categoryRnd,
                 isLoading: false,
             };
         
@@ -76,7 +77,6 @@ export default function categories(state=initialState, action) {
         case ActionTypes.CATEGORY_DEL_OK:
             return {
                 ...state,
-                categoryList: action.categoryList,
                 isLoading: false,
             };
         case ActionTypes.CATEGORY_DEL_X:
