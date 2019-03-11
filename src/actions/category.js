@@ -38,6 +38,36 @@ export function fetchAllCategories() {
   }
 };
 
+export function fetchFilteredCategories() {
+  return async (dispatch, getState) => {
+    dispatch(categoriesAll_REQ());
+    const ajaxReq = {
+      method: 'get',
+      url: API_ROOT + '/category/idsByBudgetLimit/?limit=700&above=true'
+    };
+    axios(ajaxReq)
+    .then((response) => {
+      let filterList = [];
+      let categoryList = getState().categories.categoryList;
+      for (let i = 0; i < categoryList.length; i++) {
+        for (let j = 0; j < response.data.length; j++) {
+          if (categoryList[i].id === response.data[j]) {
+            filterList.push(categoryList[i]);
+          }
+        }
+      }
+      dispatch(categoriesAll_OK(filterList));
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(categoriesAll_X());
+    })
+    .then(() => {
+      return { type: null };
+    });
+  }
+};
+
 // ADD
 export const categoryAdd_REQ = () => ({
   type: ActionTypes.CATEGORY_ADD_REQ,
