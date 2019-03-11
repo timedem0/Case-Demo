@@ -1,11 +1,12 @@
 import ActionTypes from '../actions/ActionTypes';
 
-//Define initial states of reducer
+// Define initial states of reducer
 export const initialState = {
     isLoading: false,
     categoryList: [],
     category: [],
     categoryRnd: [],
+    filteredIds: [],
     // categoryIdsFound: null,
     // categoryCurrent: null,
 };
@@ -13,7 +14,7 @@ export const initialState = {
 export default function categories(state=initialState, action) {
     switch (action.type) {
 
-        // SHOW ALL
+        // CATEGORIES SHOW ALL
         case ActionTypes.CATEGORIES_ALL_REQ:
             return {
                 ...state,
@@ -30,8 +31,26 @@ export default function categories(state=initialState, action) {
                 ...state,
                 isLoading: false,
             };
+
+        // FILTERS GET
+        case ActionTypes.CATEGORIES_FILTER_REQ:
+            return {
+                ...state,
+                isLoading: true,
+            };
+        case ActionTypes.CATEGORIES_FILTER_OK:
+            return {
+                ...state,
+                filteredIds: action.filteredIds,
+                isLoading: false,
+            };
+        case ActionTypes.CATEGORIES_FILTER_X:
+            return {
+                ...state,
+                isLoading: false,
+            };
         
-        // ADD
+        // CATEGORY ADD
         case ActionTypes.CATEGORY_ADD_REQ:
             return {
                 ...state,
@@ -48,7 +67,7 @@ export default function categories(state=initialState, action) {
                 isLoading: false,
             };
         
-        // RETURN RANDOM
+        // CATEGORY RETURN RANDOM
         case ActionTypes.CATEGORY_RND_REQ:
             return {
                 ...state,
@@ -67,7 +86,7 @@ export default function categories(state=initialState, action) {
                 isLoading: false,
             };
         
-        // DELETE
+        // CATEGORY DELETE
         case ActionTypes.CATEGORY_DEL_REQ:
             return {
                 ...state,
@@ -83,7 +102,8 @@ export default function categories(state=initialState, action) {
                 ...state,
                 isLoading: false,
             };
-
+        
+        // DEFAULT
         default:
             return state;
     }

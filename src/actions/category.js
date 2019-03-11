@@ -1,9 +1,9 @@
 import ActionTypes from './ActionTypes';
 import Category from '../models/Category';
 import axios from 'axios';
-import API_ROOT from '../constants/AppConstants';
+import { API_ROOT, BUDGET_LIMIT, BUDGET_ABOVE } from '../constants/AppConstants';
 
-// SHOW ALL
+// Categories SHOW ALL
 export const categoriesAll_REQ = () => ({
   type: ActionTypes.CATEGORIES_ALL_REQ,
 });
@@ -38,29 +38,33 @@ export function fetchAllCategories() {
   }
 };
 
-export function fetchFilteredCategories() {
+// Filters GET
+export const categoriesFilter_REQ = () => ({
+  type: ActionTypes.CATEGORIES_FILTER_REQ,
+});
+export const categoriesFilter_OK = (filteredIds) => ({
+  type: ActionTypes.CATEGORIES_FILTER_OK,
+  filteredIds: filteredIds
+});
+export const categoriesFilter_X = () => ({
+  type: ActionTypes.CATEGORIES_FILTER_X,
+});
+
+export function fetchFilteredIds() {
   return async (dispatch, getState) => {
-    dispatch(categoriesAll_REQ());
+    dispatch(categoriesFilter_REQ());
     const ajaxReq = {
       method: 'get',
-      url: API_ROOT + '/category/idsByBudgetLimit/?limit=700&above=true'
+      url: API_ROOT + '/category/idsByBudgetLimit/?limit=' + BUDGET_LIMIT + '&above=' + BUDGET_ABOVE
     };
     axios(ajaxReq)
     .then((response) => {
-      let filterList = [];
-      let categoryList = getState().categories.categoryList;
-      for (let i = 0; i < categoryList.length; i++) {
-        for (let j = 0; j < response.data.length; j++) {
-          if (categoryList[i].id === response.data[j]) {
-            filterList.push(categoryList[i]);
-          }
-        }
-      }
-      dispatch(categoriesAll_OK(filterList));
+      let filteredIds = response.data;
+      dispatch(categoriesFilter_OK(filteredIds));      
     })
     .catch((error) => {
       console.log(error);
-      dispatch(categoriesAll_X());
+      dispatch(categoriesFilter_X());
     })
     .then(() => {
       return { type: null };
@@ -68,7 +72,7 @@ export function fetchFilteredCategories() {
   }
 };
 
-// ADD
+// Category ADD
 export const categoryAdd_REQ = () => ({
   type: ActionTypes.CATEGORY_ADD_REQ,
 });
@@ -106,7 +110,7 @@ export function addCategory(category) {
   }
 };
 
-// CATEGORY RANDOM
+// Category GET RANDOM
 export const categoryRnd_REQ = () => ({
   type: ActionTypes.CATEGORY_RND_REQ,
 });
@@ -132,7 +136,7 @@ export function fetchRndCategory() {
   }
 };
 
-// DELETE
+// Category DELETE
 export const categoryDel_REQ = () => ({
   type: ActionTypes.CATEGORY_DEL_REQ,
 });
