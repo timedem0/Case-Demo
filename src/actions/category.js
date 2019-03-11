@@ -72,9 +72,8 @@ export function fetchFilteredCategories() {
 export const categoryAdd_REQ = () => ({
   type: ActionTypes.CATEGORY_ADD_REQ,
 });
-export const categoryAdd_OK = (category) => ({
+export const categoryAdd_OK = () => ({
   type: ActionTypes.CATEGORY_ADD_OK,
-  category: category,
 });
 export const categoryAdd_X = () => ({
   type: ActionTypes.CATEGORY_ADD_X,
@@ -94,7 +93,8 @@ export function addCategory(category) {
     };
     axios(ajaxReq)
     .then(() => {
-      dispatch(categoryAdd_OK(category));
+      dispatch(categoryAdd_OK());
+      dispatch(fetchAllCategories());
     })
     .catch((error) => {
       console.log(error);
