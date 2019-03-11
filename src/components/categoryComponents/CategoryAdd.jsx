@@ -12,12 +12,22 @@ class CategoryAdd extends Component {
     };
   }
 
-  inputFieldValueChanged = (event) => {
+  idChange = (event) => {
     this.setState(
-      {
-        newCategoryObject:
-          { ...this.state.newCategoryObject, [event.target.id]: event.target.value }
-      });
+      { newCategoryObject: { ...this.state.newCategoryObject, id: Number(event.target.value) } }
+    );
+  };
+
+  nameChange = (event) => {
+    this.setState(
+      { newCategoryObject: { ...this.state.newCategoryObject, name: event.target.value } }
+    );
+  };
+
+  budgetChange = (event) => {
+    this.setState(
+      { newCategoryObject: { ...this.state.newCategoryObject, budget: Number(event.target.value) } }
+    );
   };
 
   addCategory = () => {
@@ -30,9 +40,9 @@ class CategoryAdd extends Component {
       <div>
         <h4>New Category</h4>
         <p>
-          Id: <input id="id" type="number" onChange={this.inputFieldValueChanged} /><br />
-          Name: <input id="name" type="text" onChange={this.inputFieldValueChanged} /><br />
-          Budget: <input id="budget" type="number" onChange={this.inputFieldValueChanged} /><br />
+          Id: <input id="id" type="number" onChange={this.idChange} /><br />
+          Name: <input id="name" type="text" onChange={this.nameChange} /><br />
+          Budget: <input id="budget" type="number" onChange={this.budgetChange} /><br />
           <button type="button" onClick={this.addCategory}>ADD NEW CATEGORY</button>
         </p>
       </div>

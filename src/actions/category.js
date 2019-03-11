@@ -138,7 +138,6 @@ export const categoryDel_REQ = () => ({
 });
 export const categoryDel_OK = () => ({
   type: ActionTypes.CATEGORY_DEL_OK,
-  // categoryList: newList,
 });
 export const categoryDel_X = () => ({
   type: ActionTypes.CATEGORY_DEL_X,
@@ -158,7 +157,6 @@ export function deleteCategory(idToChk) {
     .then(() => {
       dispatch(categoryDel_OK());
       dispatch(fetchAllCategories());
-      dispatch(fetchRndCategory());
     })
     .catch((error) => {
       console.log(error);
