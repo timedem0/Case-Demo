@@ -6,10 +6,7 @@ class CategoryAdd extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      newCategoryObject:
-        { id: null, name: null, budget: null },
-    };
+    this.state = { newCategoryObject: { id: "", name: "", budget: "" }, };
   }
 
   idChange = (event) => {
@@ -33,6 +30,9 @@ class CategoryAdd extends Component {
   addCategory = () => {
     const category = this.state.newCategoryObject;
     this.props.addCategoryLocal(category);
+    this.setState(
+      { newCategoryObject: { id: "", name: "", budget: "" }, }
+    );
   };
   
   render = () => {
@@ -40,9 +40,9 @@ class CategoryAdd extends Component {
       <div>
         <h4>New Category</h4>
         <p>
-          Id: <input id="id" type="number" onChange={this.idChange} /><br />
-          Name: <input id="name" type="text" onChange={this.nameChange} /><br />
-          Budget: <input id="budget" type="number" onChange={this.budgetChange} /><br />
+          Id: <input id="id" type="number" value={this.state.newCategoryObject.id} onChange={this.idChange} /><br />
+          Name: <input id="name" type="text" value={this.state.newCategoryObject.name} onChange={this.nameChange} /><br />
+          Budget: <input id="budget" type="number" value={this.state.newCategoryObject.budget} onChange={this.budgetChange} /><br />
           <button type="button" onClick={this.addCategory}>ADD NEW CATEGORY</button>
         </p>
       </div>
