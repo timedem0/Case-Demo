@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CategoryListExpensive from '../../components/categoryComponents/CategoryListExpensive';
 
-export default class Categories extends Component {
+export default class CategoriesFiltered extends Component {
 
   render() {
     return (

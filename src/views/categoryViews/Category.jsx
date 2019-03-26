@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CategoryDetails from '../../components/categoryComponents/CategoryDetails';
 
-export default class Categories extends Component {
+export default class Category extends Component {
 
   render() {
     return (
